@@ -1,1 +1,141 @@
 <?php
+
+//TODO Test all this
+
+function mail_chimp_send( $email ){
+	//Setup the returns we will use
+	$success_data 	= array('success' => true, 'message' => 'Thank you');
+	$error_data 	= array('success' => false, 'message' => 'There has been an error, Please try again later');
+
+	//Check the nonce not invalid and return the error if it is
+	if( !check_ajax_referer( 'mail-chimp-ajax-nonce', 'security', false ) || !filter_var($email, FILTER_VALIDATE_EMAIL) ){
+		echo json_encode($error_data);
+		exit;
+	}
+
+	//Include the mailchimp API
+	include_once 'inc/mailchimp/Mailchimp.php';
+
+	//Setup the API keys required for this list and client
+	$api_key 	= 'client-id-here';
+	$list_id 	= 'list-id-here';
+
+	//TODO Tie in double optin nd welcome email functionality again
+	$double_optin		= 'false';
+	$send_welcome		= 'false';
+
+	$Mailchimp 			= new Mailchimp( $api_key );
+	$Mailchimp_Lists 	= new Mailchimp_Lists( $Mailchimp );
+
+
+	try{
+		$subscriber 		= $Mailchimp_Lists->subscribe(
+			$list_id,
+			array(
+				'email' => htmlentities( sanitize_email($email) )
+			)
+		);
+
+		//If everything has worked return the JSON success
+		echo json_encode($success_data);
+	}
+	catch (Exception $e){
+		//Add the error to the returned JSON
+		$error_data['error'] = $e;
+		echo json_encode($error_data);
+	}
+}
+
+function mail_chimp_ajax(){
+	/*
+	 * Sample jQuery ajax use of this function
+	 *
+	 *	$.ajax({
+	 *		url: base_dir+"/wp-admin/admin-ajax.php",
+	 *		type:'POST',
+	 *		data: {
+	 *			action: 'mail_chimp',
+	 * 			email: $('email field').val(),
+	 *			security: '<?php echo wp_create_nonce( "mail-chimp-ajax-nonce" ); ?>'
+	 *		},
+	 *		dataType: 'json',
+	 *		success: function(data){
+	 *			//Access the returned JSON
+	 * 			console.log(data.message);
+	 *		}
+	 *	});
+	 */
+
+	//Call the function to end the data
+	mail_chimp_send( $_POST['email'] );
+
+	//Stop further processing
+	exit;
+}
+add_action('wp_ajax_mail_chimp', 		'mail_chimp_ajax'); // for logged in user
+add_action('wp_ajax_nopriv_mail_chimp', 'mail_chimp_ajax'); // if user not logged in
+
+
+function campaign_monitor_send( $email, $name ){
+
+	//Setup the returns we will use
+	$success_data 	= array('success' => true, 'message' => 'Thank you');
+	$error_data 	= array('success' => false, 'message' => 'There has been an error, Please try again later');
+
+	//Check the nonce not invalid and return the error if it is
+	if( !check_ajax_referer( 'mail-chimp-ajax-nonce', 'security', false ) || !filter_var($email, FILTER_VALIDATE_EMAIL) ){
+		echo json_encode($error_data);
+		exit;
+	}
+
+	//Setup the API keys required for this list and client
+	$api_key 	= 'api-key';
+	$list_id 	= 'list-id';
+	$client_id 	= 'clint-id';
+
+	$client = new SoapClient("http://api.createsend.com/api/api.asmx?wsdl");
+	$params = new stdClass();
+	$params->ApiKey 	= $api_key;
+	$params->ListID 	= $list_id;
+	$params->Email 		= $email;
+	$params->Name 		= $name;
+	$subscription 		= $client->AddSubscriber($params);
+
+	//Return the JSON Data depending on the result
+	if( $subscription ){
+		echo json_encode($success_data);
+	} else {
+		echo json_encode($error_data);
+	}
+
+}
+
+function campaign_monitor_ajax(){
+	/*
+	 * Sample jQuery ajax use of this function
+	 *
+	 *	$.ajax({
+	 *		url: base_dir+"/wp-admin/admin-ajax.php",
+	 *		type:'POST',
+	 *		data: {
+	 *			action: 'campaign_monitor',
+	 * 			email: $('email field').val(),
+	 * 			name: $('name field').val(),
+	 *			security: '<?php echo wp_create_nonce( "campaign-monitor-ajax-nonce" ); ?>'
+	 *		},
+	 *		dataType: 'json',
+	 *		success: function(data){
+	 *			//Access the returned JSON
+	 * 			console.log(data.message);
+	 *		}
+	 *	});
+	 */
+
+	//Call the function to end the data
+	campaign_monitor_send( $_POST['email'], $_POST['name'] );
+
+	//Stop further processing
+	exit;
+}
+add_action('wp_ajax_campaign_monitor', 			'campaign_monitor_ajax'); // for logged in user
+add_action('wp_ajax_nopriv_campaign_monitor', 	'campaign_monitor_ajax'); // if user not logged in
