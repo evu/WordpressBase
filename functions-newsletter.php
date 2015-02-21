@@ -1,8 +1,9 @@
 <?php
 
-//TODO Test all this
-
 function mail_chimp_send( $email ){
+
+	//TODO Test on live server, local host throwing [Uncaught exception 'Mailchimp_HttpError' with message 'API call to lists/subscribe failed: SSL certificate problem: unable to get local issuer certificate']
+
 	//Setup the returns we will use
 	$success_data 	= array('success' => true, 'message' => 'Thank you');
 	$error_data 	= array('success' => false, 'message' => 'There has been an error, Please try again later');
@@ -21,8 +22,10 @@ function mail_chimp_send( $email ){
 	$list_id 	= 'list-id-here';
 
 	//TODO Tie in double optin nd welcome email functionality again
-	$double_optin		= 'false';
-	$send_welcome		= 'false';
+	$double_optin		= true;
+	$update_existing	= false;
+	$replace_interests	= true;
+	$send_welcome		= true;
 
 	$Mailchimp 			= new Mailchimp( $api_key );
 	$Mailchimp_Lists 	= new Mailchimp_Lists( $Mailchimp );
@@ -33,7 +36,13 @@ function mail_chimp_send( $email ){
 			$list_id,
 			array(
 				'email' => htmlentities( sanitize_email($email) )
-			)
+			),
+			null,
+			'html',
+			$double_optin,
+			$update_existing,
+			$replace_interests,
+			$send_welcome
 		);
 
 		//If everything has worked return the JSON success
@@ -83,15 +92,16 @@ function campaign_monitor_send( $email, $name ){
 	$error_data 	= array('success' => false, 'message' => 'There has been an error, Please try again later');
 
 	//Check the nonce not invalid and return the error if it is
-	if( !check_ajax_referer( 'mail-chimp-ajax-nonce', 'security', false ) || !filter_var($email, FILTER_VALIDATE_EMAIL) ){
+	/*
+	if( !check_ajax_referer( 'campaign-monitor-ajax-nonce', 'security', false ) || !filter_var($email, FILTER_VALIDATE_EMAIL) ){
 		echo json_encode($error_data);
 		exit;
 	}
+	*/
 
 	//Setup the API keys required for this list and client
 	$api_key 	= 'api-key';
 	$list_id 	= 'list-id';
-	$client_id 	= 'clint-id';
 
 	$client = new SoapClient("http://api.createsend.com/api/api.asmx?wsdl");
 	$params = new stdClass();
@@ -99,12 +109,14 @@ function campaign_monitor_send( $email, $name ){
 	$params->ListID 	= $list_id;
 	$params->Email 		= $email;
 	$params->Name 		= $name;
-	$subscription 		= $client->AddSubscriber($params);
+	$result 			= $client->AddSubscriber($params);
 
 	//Return the JSON Data depending on the result
-	if( $subscription ){
+	if( $result->{'Subscriber.AddResult'}->Code == 0 ){
 		echo json_encode($success_data);
 	} else {
+		//Add the error to the returned JSON
+		$error_data['error'] = $result->{'Subscriber.AddResult'}->Message;
 		echo json_encode($error_data);
 	}
 
