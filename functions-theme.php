@@ -35,8 +35,8 @@ function ahoy_enquire()
 add_action('wp_enqueue_scripts', 'ahoy_enquire');
 
 //Function run on theme activation
-function ahoy_init(){
-
+function ahoy_init()
+{
 	//Register navigation menus
 	/*register_nav_menus(
 		array(
@@ -88,7 +88,8 @@ function add_menu_parent_class($items)
 add_filter('wp_nav_menu_objects', 'add_menu_parent_class');
 
 //Add class menu to current menu item
-function add_current_nav_class($classes, $item) {
+function add_current_nav_class($classes, $item)
+{
 	// Getting the current post details
 	global $post;
 
@@ -103,20 +104,15 @@ function add_current_nav_class($classes, $item) {
 	}
 	$current_post_type_slug = $current_post_type->rewrite['slug'];
 
-	//echo '<pre>';var_dump($current_post_type); echo '</pre>';
-
 	// Getting the URL of the menu item
 	$menu_slug = strtolower(trim($item->url));
 
 	// If the menu item URL contains the current post types slug add the current-menu-item class
 	if (strpos($menu_slug,$current_post_type_slug) !== false) {
-
 		$classes[] = 'current-menu-item';
-
 	}
 
 	// Return the corrected set of classes to be added to the menu item
 	return $classes;
-
 }
 add_action('nav_menu_css_class', 'add_current_nav_class', 10, 2 );
