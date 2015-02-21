@@ -34,7 +34,7 @@ function mail_chimp_send( $email ){
 		$subscriber 		= $Mailchimp_Lists->subscribe(
 			$list_id,
 			array(
-				'email' => htmlentities( sanitize_email($email) )
+				'email' => htmlentities( $email )
 			),
 			null,
 			'html',
@@ -75,7 +75,7 @@ function mail_chimp_ajax(){
 	 */
 
 	//Call the function to end the data
-	mail_chimp_send( $_POST['email'] );
+	mail_chimp_send( sanitize_email($_POST['email']) );
 
 	//Stop further processing
 	exit;
@@ -143,7 +143,7 @@ function campaign_monitor_ajax(){
 	 */
 
 	//Call the function to end the data
-	campaign_monitor_send( $_POST['email'], $_POST['name'] );
+	campaign_monitor_send( sanitize_email($_POST['email']), sanitize_text_field($_POST['name']) );
 
 	//Stop further processing
 	exit;
