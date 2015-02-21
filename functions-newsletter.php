@@ -54,9 +54,9 @@ function mail_chimp_ajax(){
 	 *		url: base_dir+"/wp-admin/admin-ajax.php",
 	 *		type:'POST',
 	 *		data: {
-	 *			action: 'mail_chimp',
-	 * 			email: $('email field').val(),
-	 *			security: '<?php echo wp_create_nonce( "mail-chimp-ajax-nonce" ); ?>'
+	 *			action: 	'mail_chimp',
+	 * 			email: 		$('email field').val(),
+	 *			security: 	'<?php echo wp_create_nonce( "mail-chimp-ajax-nonce" ); ?>'
 	 *		},
 	 *		dataType: 'json',
 	 *		success: function(data){
@@ -118,10 +118,10 @@ function campaign_monitor_ajax(){
 	 *		url: base_dir+"/wp-admin/admin-ajax.php",
 	 *		type:'POST',
 	 *		data: {
-	 *			action: 'campaign_monitor',
-	 * 			email: $('email field').val(),
-	 * 			name: $('name field').val(),
-	 *			security: '<?php echo wp_create_nonce( "campaign-monitor-ajax-nonce" ); ?>'
+	 *			action: 	'campaign_monitor',
+	 * 			email: 		$('email field').val(),
+	 * 			name: 		$('name field').val(),
+	 *			security: 	'<?php echo wp_create_nonce( "campaign-monitor-ajax-nonce" ); ?>'
 	 *		},
 	 *		dataType: 'json',
 	 *		success: function(data){
