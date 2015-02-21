@@ -1,12 +1,16 @@
 <?php
+//Generate a GET friendly URL
+$url = preg_replace( '/\?.*/', '', curPageURL() );
 
-//TODO Test this entire thing again
-
-$url = curPageURL();
-if( is_single() ){
-	$title = single_post_title('', false);
+//Work out the page title
+if( is_home() ){
+	$title = get_bloginfo('name');
+} elseif( is_404()){
+	$title = 'Page not found';
 } elseif( is_archive()){
-	$title = post_type_archive_title('', false);
+	$title = single_cat_title('', false);
+} elseif( is_single() ){
+	$title = single_post_title('', false);
 } else{
 	$title = get_the_title();
 }
@@ -23,6 +27,6 @@ if( is_single() ){
 		<a href="https://plus.google.com/share?url=<?php echo $url; ?>" title="Share on Google plus"><?php if( wp_script_is( 'font-awesome', 'enqueued' ) ):?><i class="fa fa-google-plus"></i><?php else: ?>Share on google+<?php endif; ?></a>
 	</li>
 	<li>
-		<a href="https://www.linkedin.com/shareArticle?mini=true&url=<?php echo $url; ?>&title=TI<?php echo $title; ?>&summary=&source=" title="Share on LinkedIn"><?php if( wp_script_is( 'font-awesome', 'enqueued' ) ):?><i class="fa fa-linkedin"></i><?php else: ?>Share on LinkedIn<?php endif; ?></a>
+		<a href="https://www.linkedin.com/shareArticle?mini=true&url=<?php echo $url; ?>&title=<?php echo $title; ?>&summary=&source="<?php echo get_site_url(); ?> title="Share on LinkedIn"><?php if( wp_script_is( 'font-awesome', 'enqueued' ) ):?><i class="fa fa-linkedin"></i><?php else: ?>Share on LinkedIn<?php endif; ?></a>
 	</li>
 </ul>
