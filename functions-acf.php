@@ -3,24 +3,22 @@
  * Include any Options page setup or field set installations here
  */
 
-//TODO Considering breaking into smaller peices
-
 //Add extra options pages to ACF
 function my_acf_options_page_settings($settings)
 {
 	$settings['title'] = 'Options';
-	$settings['pages'] = array('General Setup', 'Site Options', 'Emails');
+	$settings['pages'] = array('Social', 'Site Options', 'Emails');
 
 	return $settings;
 }
 add_filter('acf/options_page/settings', 'my_acf_options_page_settings');
 
-//Add General setup Field group
+//Add social Field groups
 if(function_exists("register_field_group"))
 {
 	register_field_group(array (
-		'id' => 'acf_general-setup',
-		'title' => 'General Setup',
+		'id' => 'acf_social',
+		'title' => 'Social Setup',
 		'fields' => array (
 			array (
 				'key' => 'field_53e359d6636c1',
@@ -192,7 +190,7 @@ if(function_exists("register_field_group"))
 				array (
 					'param' => 'options_page',
 					'operator' => '==',
-					'value' => 'acf-options-general-setup',
+					'value' => 'acf-options-social',
 					'order_no' => 0,
 					'group_no' => 0,
 				),
