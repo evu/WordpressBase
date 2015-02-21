@@ -21,7 +21,6 @@ function mail_chimp_send( $email ){
 	$api_key 	= 'client-id-here';
 	$list_id 	= 'list-id-here';
 
-	//TODO Tie in double optin nd welcome email functionality again
 	$double_optin		= true;
 	$update_existing	= false;
 	$replace_interests	= true;
