@@ -15,7 +15,7 @@ function mail_chimp_send( $email ){
 	}
 
 	//Include the mailchimp API
-	include_once 'inc/mailchimp/Mailchimp.php';
+	require_once 'inc/mailchimp/Mailchimp.php';
 
 	//Setup the API keys required for this list and client
 	$api_key 	= 'client-id-here';
@@ -55,24 +55,25 @@ function mail_chimp_send( $email ){
 }
 
 function mail_chimp_ajax(){
-	/*
-	 * Sample jQuery ajax use of this function
-	 *
-	 *	$.ajax({
-	 *		url: base_dir+"/wp-admin/admin-ajax.php",
-	 *		type:'POST',
-	 *		data: {
-	 *			action: 	'mail_chimp',
-	 * 			email: 		$('email field').val(),
-	 *			security: 	'<?php echo wp_create_nonce( "mail-chimp-ajax-nonce" ); ?>'
-	 *		},
-	 *		dataType: 'json',
-	 *		success: function(data){
-	 *			//Access the returned JSON
-	 * 			console.log(data.message);
-	 *		}
-	 *	});
-	 */
+	/****************************************
+	 *Sample jQuery ajax use of this function
+	 ****************************************
+
+	$.ajax({
+		url: base_dir+"/wp-admin/admin-ajax.php",
+		type:'POST',
+		data: {
+			action: 	'mail_chimp',
+			email: 		$('email field').val(),
+			security: 	'<?php echo wp_create_nonce( "mail-chimp-ajax-nonce" ); ?>'
+		},
+		dataType: 'json',
+		success: function(data){
+			//Access the returned JSON
+			console.log(data.message);
+		}
+	});
+	*/
 
 	//Call the function to end the data
 	mail_chimp_send( sanitize_email($_POST['email']) );
@@ -91,56 +92,72 @@ function campaign_monitor_send( $email, $name ){
 	$error_data 	= array('success' => false, 'message' => 'There has been an error, Please try again later');
 
 	//Check the nonce not invalid and return the error if it is
-	/*
 	if( !check_ajax_referer( 'campaign-monitor-ajax-nonce', 'security', false ) || !filter_var($email, FILTER_VALIDATE_EMAIL) ){
 		echo json_encode($error_data);
 		exit;
 	}
-	*/
 
-	//Setup the API keys required for this list and client
-	$api_key 	= 'api-key';
-	$list_id 	= 'list-id';
+	//Include the bloated campaign monitor API
+	require_once 'inc/campaignmonitor/csrest_subscribers.php';
 
-	$client = new SoapClient("http://api.createsend.com/api/api.asmx?wsdl");
-	$params = new stdClass();
-	$params->ApiKey 	= $api_key;
-	$params->ListID 	= $list_id;
-	$params->Email 		= $email;
-	$params->Name 		= $name;
-	$result 			= $client->AddSubscriber($params);
+	//If passing string for second variable it assumes it is api key and converts it into array inside class
+	$wrap = new CS_REST_Subscribers('7995f4780511653a8a60d06d0dc47324', 'cd9c428162942fbd500963889067e271a993a22ae0cdac1c');
+	$result = $wrap->add(array(
+		'EmailAddress' 	=> $email,
+		'Name' 			=> $name,
+		/*
+		'CustomFields' => array(
+			array(
+				'Key' => 'Field 1 Key',
+				'Value' => 'Field Value'
+			),
+			array(
+				'Key' => 'Field 2 Key',
+				'Value' => 'Field Value'
+			),
+			array(
+				'Key' => 'Multi Option Field 1',
+				'Value' => 'Option 1'
+			),
+			array(
+				'Key' => 'Multi Option Field 1',
+				'Value' => 'Option 2'
+			)
+		),
+		*/
+		'Resubscribe' => true
+	));
 
 	//Return the JSON Data depending on the result
-	if( $result->{'Subscriber.AddResult'}->Code == 0 ){
+	if($result->was_successful()) {
 		echo json_encode($success_data);
 	} else {
 		//Add the error to the returned JSON
-		$error_data['error'] = $result->{'Subscriber.AddResult'}->Message;
+		$error_data['error'] = $result->response->Message;
 		echo json_encode($error_data);
 	}
-
 }
 
 function campaign_monitor_ajax(){
-	/*
-	 * Sample jQuery ajax use of this function
-	 *
-	 *	$.ajax({
-	 *		url: base_dir+"/wp-admin/admin-ajax.php",
-	 *		type:'POST',
-	 *		data: {
-	 *			action: 	'campaign_monitor',
-	 * 			email: 		$('email field').val(),
-	 * 			name: 		$('name field').val(),
-	 *			security: 	'<?php echo wp_create_nonce( "campaign-monitor-ajax-nonce" ); ?>'
-	 *		},
-	 *		dataType: 'json',
-	 *		success: function(data){
-	 *			//Access the returned JSON
-	 * 			console.log(data.message);
-	 *		}
-	 *	});
-	 */
+	/****************************************
+	 *Sample jQuery ajax use of this function
+	 ****************************************
+	$.ajax({
+		url: base_dir+"/wp-admin/admin-ajax.php",
+		type:'POST',
+		data: {
+			action: 	'campaign_monitor',
+			email: 		$('email field').val(),
+			name: 		$('name field').val(),
+			security: 	'<?php echo wp_create_nonce( "campaign-monitor-ajax-nonce" ); ?>'
+		},
+		dataType: 'json',
+		success: function(data){
+			//Access the returned JSON
+			console.log(data.message);
+		}
+	});
+	*/
 
 	//Call the function to end the data
 	campaign_monitor_send( sanitize_email($_POST['email']), sanitize_text_field($_POST['name']) );
