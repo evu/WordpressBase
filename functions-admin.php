@@ -69,3 +69,12 @@ add_action('after_setup_theme','remove_core_updates');
 //Remove plugin update notifications
 remove_action('load-update-core.php','wp_update_plugins');
 add_filter('pre_site_transient_update_plugins','__return_null');
+
+//Only allow certain roles into admin section
+function restrict_admin(){
+	if ( is_admin() && (!is_role('super_admin') && !is_role('administrator') && !is_role('editor') && !is_role('author') && !is_role('contributor')) && !(defined('DOING_AJAX') && DOING_AJAX) ) {
+		wp_redirect(home_url());
+		exit;
+	}
+}
+add_action('init', 'restrict_admin', 0);

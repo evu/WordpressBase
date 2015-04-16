@@ -18,8 +18,7 @@ function ahoy_enquire()
 	//wp_enqueue_script('wowjs', 					get_template_directory_uri() . '/inc/wowjs/wow.min.js');
 	//wp_enqueue_style('animate-css', 				get_template_directory_uri() . '/inc/wowjs/animate.css');
 
-	//wp_register_script('responsive-height', 		get_template_directory_uri() . '/js/responsive-height.js');
-	//wp_enqueue_script('responsive-height');
+	//wp_enqueue_script('responsive-height', 		get_template_directory_uri() . '/js/responsive-height.js');
 
 	//wp_enqueue_script('field-type', 				get_template_directory_uri() . '/js/field-type.js', array( 'jquery' ));
 
@@ -49,20 +48,14 @@ function ahoy_init()
 	add_theme_support( 'html5', array( 'comment-list', 'comment-form', 'search-form', 'gallery', 'caption' ) );
 
 	//Customise post type support
-	/*add_post_type_support('post', 'excerpt');
+	/*
+	add_post_type_support('post', 'excerpt');
 	remove_post_type_support('post', 'custom-fields');
-	remove_post_type_support('post', 'page-attributes');*/
+	remove_post_type_support('post', 'page-attributes');
+	*/
 
 	//Add image sizes
 	/*add_image_size('archive-thumb', 500, 250, true);*/
-
-	//Lock users out of admin section
-	if (is_admin() && !current_user_can('administrator') &&
-		!(defined('DOING_AJAX') && DOING_AJAX)
-	) {
-		wp_redirect(home_url());
-		exit;
-	}
 }
 add_action('init', 'ahoy_init');
 
