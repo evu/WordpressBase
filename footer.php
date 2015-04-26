@@ -1,14 +1,11 @@
-		</div> <!--End #page-wrap-->
-		<footer role="contentinfo ">
 
+		<footer role="contentinfo" class="page-footer">
+			<small class="copyright">&copy;<?php echo date("Y") . " "; bloginfo('name'); ?></small>
 		</footer>
-	</div><!--End #site-wrap-->
+
+	</div><!--End .site-wrap-->
 
 	<?php wp_footer(); ?>
-
-	<!-- Header Scripts -->
-	<?php get_template_part('scripts', 'header'); ?>
-	<!-- End Header Scripts -->
-
+	
 </body>
 </html>
