@@ -6,7 +6,8 @@ function ahoy_enquire() {
 	// Libs
 	wp_enqueue_script( 'modernizr', get_template_directory_uri() . '/assets/js/libs/modernizr.js');
 	wp_enqueue_script('jquery');
-	wp_enqueue_script( 'velocity', get_template_directory_uri() . '/assets/js/libs/velocity.min.js', false, false, true);
+	wp_enqueue_script( 'velocity', get_template_directory_uri() . '/assets/js/libs/velocity.min.js', 'jquery', false, true);
+	wp_enqueue_script( 'validate', get_template_directory_uri() . '/assets/js/libs/jquery.validate.js', 'jquery', false, true);
 	
 	// Theme
 	wp_enqueue_style('site-styles', get_template_directory_uri() . '/assets/css/main.css');
@@ -18,13 +19,11 @@ add_action('wp_enqueue_scripts', 'ahoy_enquire');
 //Function run on theme activation
 function ahoy_init() {
 	//Register navigation menus
-	/*register_nav_menus(
+	register_nav_menus(
 		array(
-			'header-menu-left' 	=> 'Main Menu Left',
-			'header-menu-right' => 'Main Menu Right',
-			'footer-bottom' 	=> 'Footer Bottom'
+			'main-nav' 	=> 'Main Navigation Menu',
 		)
-	);*/
+	);
 
 	// Remove unwanted things
 	remove_action('wp_head', 'rsd_link');
@@ -42,11 +41,11 @@ function ahoy_init() {
 	add_theme_support( 'html5', array( 'comment-list', 'comment-form', 'search-form', 'gallery', 'caption' ) );
 
 	//Customise post type support
-	/*
-	add_post_type_support('post', 'excerpt');
+	
+	//add_post_type_support('post', 'excerpt');
 	remove_post_type_support('post', 'custom-fields');
 	remove_post_type_support('post', 'page-attributes');
-	*/
+	
 
 	//Add image sizes
 	/*add_image_size('archive-thumb', 500, 250, true);*/

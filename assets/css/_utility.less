@@ -79,4 +79,15 @@ article {
     max-width: @width;
     margin-left: auto;
     margin-right: auto;
+    padding-left: @spacer;
+    padding-right: @spacer;
+}
+
+.full-justify {
+    &:after {
+        content: "";
+        display: inline-block;
+        height: 0;
+        width: 100%;
+    }
 }
