@@ -1,52 +1,37 @@
 <?php get_header(); ?>
 
-	<main role="main" class="page-content <?php echo get_post_type(); ?>-archive">
+	<main role="main" class="page-content page-archive">
 
-		<?php if (have_posts()) : ?>
+		<h1><?php echo get_the_title(get_option('page_for_posts')); ?></h1>
 
-			<?php while (have_posts()) : the_post(); ?>
-
-				<article class="post-preview">
-
-					<h1><?php the_title(); ?></h1>
-					<?php the_excerpt(); ?>
-					<a href="<?php the_permalink(); ?>" class="button">View More</a>
-					
-				</article>
-
-			<?php endwhile; ?>
-
+		<?php if (is_date()): ?>
+			<p>Our posts from <?php echo get_the_date('F, Y'); ?></p>
+		<?php elseif (is_category()): ?>
+			<p>Our posts from <?php single_cat_title( '', true ); ?></p>
+		<?php elseif (is_search()): ?>
+			<p>Showing results for <?php echo get_search_query(); ?></p>
 		<?php else: ?>
+			<p>Keep up to date with the latest in contractor legislation changes</p>
+		<?php endif ?>
 
-			<?php if($post_type = get_post_type_object( get_query_var('post_type') )): ?>
+		<?php if (have_posts()) : while (have_posts()) : the_post(); ?>
+
+			<article class="post-preview">
+
+				<h2><?php the_title(); ?></h2>
+				<?php the_excerpt(); ?>
+				<a href="<?php the_permalink(); ?>" class="button">View More</a>
 				
-				<h2>Sorry no <?php echo $post_type->labels->name; ?> found</h2>
+			</article>
 
-			<?php endif; ?>
+		<?php endwhile; else: ?>
+
+				<h2 class="search-fail">Sorry, we couldn't find anything relating to <strong><?php echo get_search_query(); ?></strong>.</h2>
 
 		<?php endif; ?>
 
 	</main>
 
-	<?php
-	if(have_posts()) :
-		global $wp_query;
-		$big = 999999999;
-		$paginate_links = paginate_links(array(
-			'base' => str_replace($big, '%#%', get_pagenum_link($big)),
-			'current' => max(1, get_query_var('paged')),
-			'total' => $wp_query->max_num_pages,
-			'mid_size' => 2,
-			'prev_next' => true,
-			'prev_text' => __('Previous'),
-			'next_text' => __('Next')
-		));
-		if ($paginate_links) {
-			echo '<nav class="pagination">';
-			echo $paginate_links;
-			echo '</nav>';
-		}
-	endif;
-	?>
+	<?php get_pagination(); ?>
 
 <?php get_footer(); ?>

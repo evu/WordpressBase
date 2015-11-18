@@ -1,6 +1,6 @@
 /* ================================ !RESETS */
 
-* { -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box; margin: 0; padding: 0; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
 
 html { -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; font-size: 62.5%; -webkit-font-smoothing: antialiased; }
 body { line-height: 1; background: #fff }
@@ -11,15 +11,15 @@ small { font-size: 80%; }
 sub, sup { font-size: 75%; line-height: 0; position: relative; vertical-align: baseline; }
 sup { top: -0.5em; }
 sub { bottom: -0.25em; }
-ul {
-	list-style-type: none;
-}
+ul { list-style-type: none; }
+address { font-style: normal; }
 
 a:hover, a:active { outline: 0; }
 
 table { border-collapse: collapse; border-spacing: 0; }
 img { border: 0; -ms-interpolation-mode: bicubic; vertical-align: middle; max-width: 100%; height: auto; }
 
+input:first-line, select:first-line { display: inline-block; }
 html, button, input, select, textarea { font-family: inherit; color: #222; font-size: 100%; }
 label, button, input, select, textarea, option { vertical-align: baseline; *vertical-align: middle; cursor: pointer; border-radius: 0; }
 button, input[type="button"], input[type="reset"], input[type="submit"] {-webkit-appearance: button; *overflow: visible; }
@@ -36,7 +36,7 @@ main, article, aside, details, figcaption, figure, footer, header, hgroup, nav, 
 .chromeframe a { color: #00e; }
 
 @media print { 
-    * { background: transparent !important; color: #000 !important; box-shadow: none !important; text-shadow: none !important; filter: none !important; -ms-filter: none !important; }
+    * { background: transparent !important; color: #000 !important; box-shadow: none !important; text-shadow: none !important; -webkit-filter: none !important; filter: none !important; -ms-filter: none !important; }
     a, a:visited { text-decoration: underline }
     a[href]:after { content: " (" attr(href) ")" }
     a[href^="#"]:after { content: "" }

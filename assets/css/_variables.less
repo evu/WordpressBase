@@ -1,24 +1,61 @@
 //=================================== !VARIABLES
 
-// Colours
-@brand: #ACE;
-@base: #4f4f4f;
+
+/* =================== !COLOURS */
+@color--primary: #ACE;
+@color--secondary: #f00;
 
 
-// Grid
-@width: 1000px;
-@spacer: 20px;
+@color--base: #4f4f4f;
 
 
-// Speeds
-@fast: .12s;
-@slow: .3s;
+@color--white: #fff;
+@color--black: #000;
 
 
-// Easings
-@easing: cubic-bezier(0.230, 1.000, 0.320, 1.000); /* easeOutQuint */
+
+/* =================== !GRID */
+@grid--width: 100rem;
+@grid--space: 2rem;
 
 
-// Font Stacks
-@headings: Georgia, sans-serif;
-@body: Arial, sans-serif;
+
+
+/* =================== !MEDIA-QUERIES  */
+
+@max-tablet--wide: ~"(max-width: 1024px)";
+@min-tablet--wide: ~"(min-width: 1024px)";
+
+@max-tablet--slim: ~"(max-width: 768px)";
+@min-tablet--slim: ~"(min-width: 768px)";
+
+@max-mobile--wide: ~"(max-width: 480px)";
+@min-mobile--wide: ~"(min-width: 480px)";
+
+@max-mobile--slim: ~"(max-width: 360px)";
+@min-mobile--slim: ~"(min-width: 360px)";
+
+
+
+
+
+/* =================== !SPEEDS */
+@speed--fast: .3s;
+@speed--slow: .6s;
+
+@speed--in: @speed--slow;
+@speed--out: @speed--fast;
+
+
+
+
+/* =================== !EASINGS */
+@easing: cubic-bezier(.55, 0, .1, 1); /* Swift Out (Google Material Design) */
+
+
+
+
+
+/* =================== !FONT-STACKS */
+@font--primary: Georgia, sans-serif;
+@font--secondary: Arial, sans-serif;

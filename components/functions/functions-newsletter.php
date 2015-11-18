@@ -93,12 +93,19 @@ function campaign_monitor_send( $email, $name ){
 
 	//Check the nonce not invalid and return the error if it is
 	if( !check_ajax_referer( 'campaign-monitor-ajax-nonce', 'security', false ) || !filter_var($email, FILTER_VALIDATE_EMAIL) ){
+
+		if (!check_ajax_referer( 'campaign-monitor-ajax-nonce', 'security', false )) {
+			$error_data['message'] = 'Nonce Fail';
+		}
+		if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+			$error_data['message'] = 'Email Validation Fail';
+		}
 		echo json_encode($error_data);
 		exit;
 	}
 
 	//Include the bloated campaign monitor API
-	require_once '../libs/campaignmonitor/csrest_subscribers.php';
+	require_once __DIR__ . '/../libs/campaignmonitor/csrest_subscribers.php';
 
 	//If passing string for second variable it assumes it is api key and converts it into array inside class
 	$wrap = new CS_REST_Subscribers('7995f4780511653a8a60d06d0dc47324', 'cd9c428162942fbd500963889067e271a993a22ae0cdac1c');
@@ -110,18 +117,6 @@ function campaign_monitor_send( $email, $name ){
 			array(
 				'Key' => 'Field 1 Key',
 				'Value' => 'Field Value'
-			),
-			array(
-				'Key' => 'Field 2 Key',
-				'Value' => 'Field Value'
-			),
-			array(
-				'Key' => 'Multi Option Field 1',
-				'Value' => 'Option 1'
-			),
-			array(
-				'Key' => 'Multi Option Field 1',
-				'Value' => 'Option 2'
 			)
 		),
 		*/

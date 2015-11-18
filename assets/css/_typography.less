@@ -1,64 +1,99 @@
-/* ================================ !TYPE & SELECTION */
+/* ================================ !TYPOGRAPHY */
+
+/* =================== !LINKS */
 
 a { 
-	color: @brand;
+	color: @color--primary;
 	text-decoration: none;
+	outline: 0;
 
 	&:hover,
 	&:focus {
-		color: lighten(@brand, 10%);
+		color: lighten(@color--primary, 10%);
 	}
 }
 
-::-moz-selection { background: @brand; color: #fff; text-shadow: none }
-::selection { background: @brand; color: #fff; text-shadow: none }
 
+
+
+
+/* =================== !SELECTION */
+
+::-moz-selection { background: @color--primary; color: #fff; text-shadow: none }
+::selection { background: @color--primary; color: #fff; text-shadow: none }
+
+
+
+
+
+
+/* =================== !BASE-TYPE */
+html {
+	font-size: 62.5%;
+}
 
 .b,
 body {
-	font-family: @body;
+	font-family: @font--secondary;
 }
+
 body {
-	color: @base;
+	color: @color--base;
+	font-size: 1.6rem;
 }
+
+
+
+
+/* =================== !HEADINGS */
 
 .h,
 h1, h2, h3, h4, h5, h6 {
-	font-family: @headings;
+	font-family: @font--primary;
 }
 h1, h2, h3, h4, h5, h6 {
 	line-height: 1.2;
-	margin-bottom: @spacer;
+	margin-bottom: @grid--space;
 }
 
 h1,
 .h1 {
-
+	font-size: 3.6rem;
 }
 h2,
 .h2 {
-
+	font-size: 3rem;
 }
 h3,
 .h3 {
-
+	font-size: 2.4rem;
 }
 h4,
 .h4 {
-
+	font-size: 2rem;
+}
+h5,
+.h5 {
+	font-size: 1.8rem;
 }
 
-p {
-	line-height: 1.6;
-	margin-bottom: @spacer;
-}
+
+
+
+
+
+/* =================== !ARTICLES */
 
 article {
+	p {
+		line-height: 1.6;
+		margin-bottom: @grid--space;
+	}
+
 	blockquote {
 		font-style: italic;
-		padding: @spacer;
-		background: #eee;
-		margin-bottom: @spacer;
+		padding: @grid--space;
+		margin-bottom: @grid--space;
 
 		> p {
 			margin-bottom: 0;
@@ -67,20 +102,26 @@ article {
 
 	ul,
 	ol {
-		padding-left: @spacer;
-		margin: @spacer 0;
+		padding-left: @grid--space;
+		margin: @grid--space 0;
 		list-style-position: outside;
 		list-style-type: disc;
 	}
 		
 	li {
-		margin: @spacer/2 0;
+		margin: @grid--space/2 0;
 	}
 }
 
+
+
+
+
+
+/* =================== !WORDPRESS */
 .wp-caption {
     max-width: 100% !important;
-    margin-bottom: @spacer;
+    margin-bottom: @grid--space;
 
     > a {
         display: block;
@@ -89,5 +130,5 @@ article {
 .wp-caption-text {
     text-align: center;
     font-size: 80%;
-    margin: .5em 0;
+    margin: .5rem 0;
 }

@@ -2,10 +2,12 @@
 
 	<main role="main" class="page-content page-404">
 
-		<h1>This is somewhat embarrassing, isn&rsquo;t it?</h1>
+		<article>
+			<h1><strong>404.</strong> Page not found.</h1>
 
-		<p>It seems we can&rsquo;t find what you&rsquo;re looking for. <br>
-		<a href="/">Back to the Homepage</a></p>
+			<p>This could be because of a typo, an out of date link, or that page doesn't exist. </p>
+			<p><a href="/">Go to the Homepage?</a></p>
+		</article>
 
 	</main>
 
